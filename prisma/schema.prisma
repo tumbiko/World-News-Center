@@ -1,0 +1,85 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  READER
+  UPLOADER
+  ADMIN
+}
+
+enum Category {
+  SPORTS
+  MUSIC
+  ENTERTAINMENT
+  TECH
+  POLITICS
+  WORLD
+  BUSINESS
+}
+
+enum ArticleStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  role         Role          @default(READER)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  articles     Article[]
+  likes        Like[]
+}
+
+model Article {
+  id          String        @id @default(uuid())
+  title       String
+  slug        String        @unique
+  summary     String
+  content     String        @db.Text
+  category    Category
+  imageUrl    String?
+  videoUrl    String?
+  sourceUrl   String?
+  status      ArticleStatus @default(PENDING)
+  isTrending  Boolean       @default(false)
+  isFeatured  Boolean       @default(false)
+  views       Int           @default(0)
+  uploaderId  String
+  uploader    User          @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  likes       Like[]
+
+  @@index([status, createdAt])
+  @@index([isTrending, isFeatured])
+  @@index([category])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, articleId])
+}
+
+model Subscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
