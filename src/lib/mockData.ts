@@ -62,7 +62,7 @@ The stadium erupted into sheer pandemonium. The treble was secured. The underdog
 - **Pass Accuracy**: 89% under high-pressing defensive alignments.
 - **Player of the Match**: Marcus Vance (1 goal, 1 assist).`,
     category: Category.SPORTS,
-    imageUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1200',
     videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', // Premium direct mp4 sample video
     sourceUrl: 'https://www.uefa.com/uefachampionsleague/',
     status: ArticleStatus.APPROVED,

@@ -43,9 +43,49 @@
   gap: 1.5rem;
   color: var(--text-secondary);
   font-size: 0.9rem;
-  border-bottom: 1px solid var(--card-border);
-  padding-bottom: 1rem;
+  border-top: 1px solid var(--card-border);
+  padding-top: 1rem;
 }
+
+.categoryBadge {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--primary-glow);
+  color: var(--primary);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.videoBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--danger-glow);
+  color: var(--danger);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.summary {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  border-left: 4px solid var(--primary);
+  padding-left: 1.25rem;
+  margin: 0;
+  font-style: italic;
+}
+
 
 /* Custom Responsive Video Player Container */
 .videoWrapper {

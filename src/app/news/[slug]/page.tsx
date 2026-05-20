@@ -80,13 +80,31 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
         <article style={{ position: 'relative', zIndex: 10 }}>
           {/* Header metadata */}
           <div className={styles.articleHeader}>
-            <Link href="/" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>
+            <Link href="/" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem', display: 'block' }}>
               ← Back to Main Feed
             </Link>
+
+            {/* Category + Video Badges */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <span className={styles.categoryBadge}>
+                {article.category}
+              </span>
+              {article.videoUrl && (
+                <span className={styles.videoBadge}>
+                  📹 Video Report
+                </span>
+              )}
+            </div>
+
             <h1 className={styles.title}>{article.title}</h1>
+
+            {/* Article Summary / Subtitle */}
+            {article.summary && (
+              <p className={styles.summary}>{article.summary}</p>
+            )}
             
             <div className={styles.meta}>
-              <span>📁 {article.category}</span>
+              <span>✍ {uploaderName}</span>
               <span>👁 {article.views} views</span>
               <span>📅 {new Date(article.createdAt).toLocaleDateString()}</span>
             </div>
