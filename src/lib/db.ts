@@ -14,7 +14,7 @@ const prismaClientSingleton = () => {
     connectionString,
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 15000, // 15s to handle serverless cold-start latency
   });
 
   // Create driver adapter for Prisma 7

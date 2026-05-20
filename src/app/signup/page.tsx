@@ -87,19 +87,7 @@ export default function SignupPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="role">Choose Your Role</label>
-            <select
-              className={styles.select}
-              id="role"
-              name="role"
-              required
-              disabled={loading}
-            >
-              <option value="READER">Reader (Track & bookmark favorite stories)</option>
-              <option value="UPLOADER">News Uploader (Publish articles & video references)</option>
-            </select>
-          </div>
+
 
           <button
             type="submit"

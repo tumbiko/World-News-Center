@@ -43,7 +43,6 @@ export async function signupAction(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const name = formData.get('name') as string;
-  const roleInput = formData.get('role') as string;
 
   if (!email || !password || !name) {
     return { success: false, error: 'All fields are required.' };
@@ -70,8 +69,6 @@ export async function signupAction(formData: FormData) {
     let finalRole: Role = Role.READER;
     if (totalUsers === 0) {
       finalRole = Role.ADMIN;
-    } else if (roleInput === 'UPLOADER') {
-      finalRole = Role.UPLOADER;
     }
 
     const user = await db.user.create({

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getUserFromCookie, removeSessionCookie } from '@/lib/auth';
 import styles from './Navbar.module.css';
 import { redirect } from 'next/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default async function Navbar() {
   const user = await getUserFromCookie();
@@ -83,6 +84,8 @@ export default async function Navbar() {
               </Link>
             </div>
           )}
+
+          <ThemeToggle />
         </nav>
       </div>
     </header>

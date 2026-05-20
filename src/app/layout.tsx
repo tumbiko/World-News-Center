@@ -21,7 +21,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme') || 'system';
+                  var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                  
+                  function setTheme(t) {
+                    var isDark = t === 'dark' || (t === 'system' && darkQuery.matches);
+                    if (isDark) {
+                      document.documentElement.classList.add('dark-theme');
+                      document.documentElement.classList.remove('light-theme');
+                    } else {
+                      document.documentElement.classList.add('light-theme');
+                      document.documentElement.classList.remove('dark-theme');
+                    }
+                  }
+                  
+                  setTheme(theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <Navbar />
         <main>{children}</main>
