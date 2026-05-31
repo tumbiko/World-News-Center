@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createArticleAction } from '@/lib/actions';
-import { Category } from '@prisma/client';
 
 export default function UploadForm() {
   const router = useRouter();
@@ -31,7 +30,7 @@ export default function UploadForm() {
     setLoading(false);
   }
 
-  const categories = Object.values(Category);
+  const categories = ['SPORTS', 'MUSIC', 'ENTERTAINMENT', 'TECH', 'POLITICS', 'WORLD', 'BUSINESS'] as const;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
