@@ -1,41 +1,52 @@
 import Link from 'next/link';
-import styles from './Footer.module.css';
 import NewsletterForm from './NewsletterForm';
+import { Globe } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
-      <div className={`${styles.grid} container`}>
+    <footer className="bg-muted/50 border-t border-border pt-16 pb-8 mt-auto">
+      <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1.5fr] gap-12 mb-12">
         {/* Brand Info */}
-        <div className={styles.brandCol}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.25rem', fontFamily: 'var(--font-display)' }}>
-            <span>🌍</span>
+        <div className="flex flex-col gap-4">
+          <Link href="/" className="flex items-center gap-2 font-display font-extrabold text-xl text-foreground">
+            <Globe className="h-5 w-5 text-primary" />
             <span className="gradient-text">World News Center</span>
           </Link>
-          <p className={styles.description}>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
             Your premium global hub for breaking news, expert analyses, trending topics, and direct video feeds. Stay informed without restrictions.
           </p>
         </div>
 
         {/* Categories Links */}
         <div>
-          <h4 className={styles.title}>Categories</h4>
-          <ul className={styles.links}>
-            <li><Link href="/?category=WORLD" className={styles.link}>World News</Link></li>
-            <li><Link href="/?category=SPORTS" className={styles.link}>Sports News</Link></li>
-            <li><Link href="/?category=MUSIC" className={styles.link}>Music & Culture</Link></li>
-            <li><Link href="/?category=ENTERTAINMENT" className={styles.link}>Entertainment</Link></li>
-            <li><Link href="/?category=TECH" className={styles.link}>Technology</Link></li>
-            <li><Link href="/?category=BUSINESS" className={styles.link}>Business</Link></li>
+          <h4 className="font-display text-base font-bold text-foreground mb-5">Categories</h4>
+          <ul className="flex flex-col gap-3 list-none">
+            {[
+              ['/?category=WORLD', 'World News'],
+              ['/?category=SPORTS', 'Sports News'],
+              ['/?category=MUSIC', 'Music & Culture'],
+              ['/?category=ENTERTAINMENT', 'Entertainment'],
+              ['/?category=TECH', 'Technology'],
+              ['/?category=BUSINESS', 'Business'],
+            ].map(([href, label]) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all duration-150 inline-block"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* Newsletter Subscription */}
-        <div className={styles.newsletterCol}>
-          <h4 className={styles.title}>Newsletter</h4>
-          <p className={styles.newsletterText}>
+        <div className="flex flex-col gap-3">
+          <h4 className="font-display text-base font-bold text-foreground mb-2">Newsletter</h4>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             Subscribe to our weekly alerts and get top trending stories delivered directly to your inbox. No registration required.
           </p>
           <NewsletterForm />
@@ -43,13 +54,13 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className={`${styles.bottom} container`}>
-        <span className={styles.copyright}>
+      <div className="container mx-auto px-6 border-t border-border pt-6 flex flex-wrap justify-between items-center gap-4">
+        <span className="text-muted-foreground text-sm">
           © {currentYear} World News Center. All rights reserved. Built for scalability.
         </span>
-        <div style={{ display: 'flex', gap: '1.5rem' }}>
-          <Link href="/privacy" className={styles.link} style={{ fontSize: '0.8rem' }}>Privacy Policy</Link>
-          <Link href="/terms" className={styles.link} style={{ fontSize: '0.8rem' }}>Terms of Use</Link>
+        <div className="flex gap-6">
+          <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Terms of Use</Link>
         </div>
       </div>
     </footer>

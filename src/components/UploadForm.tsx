@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createArticleAction } from '@/lib/actions';
 import { Category } from '@prisma/client';
-import styles from '@/app/uploader/dashboard/page.module.css';
 
 export default function UploadForm() {
   const router = useRouter();
@@ -35,23 +34,23 @@ export default function UploadForm() {
   const categories = Object.values(Category);
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {successMsg && (
-        <div className={styles.alertSuccess}>
+        <div className="bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-4 py-3 rounded-xl text-sm mb-2 flex items-center gap-2 animate-fade-in">
           ✓ {successMsg}
         </div>
       )}
 
       {errorMsg && (
-        <div className={styles.alertError}>
+        <div className="bg-destructive/10 text-destructive border border-destructive/20 px-4 py-3 rounded-xl text-sm mb-2 flex items-center gap-2 animate-fade-in">
           ⚠ {errorMsg}
         </div>
       )}
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="title">Article Title</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="title">Article Title</label>
         <input
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           type="text"
           id="title"
           name="title"
@@ -61,15 +60,14 @@ export default function UploadForm() {
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="category">Category / Genre</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="category">Category / Genre</label>
         <select
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 cursor-pointer"
           id="category"
           name="category"
           required
           disabled={loading}
-          style={{ appearance: 'auto' }}
         >
           <option value="">Select Category</option>
           {categories.map(cat => (
@@ -80,10 +78,10 @@ export default function UploadForm() {
         </select>
       </div>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="summary">Short Summary (For homepage preview cards)</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="summary">Short Summary (For homepage preview cards)</label>
         <input
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           type="text"
           id="summary"
           name="summary"
@@ -93,10 +91,10 @@ export default function UploadForm() {
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="content">Article Body (Supports markdown headings & lists)</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="content">Article Body (Supports markdown headings & lists)</label>
         <textarea
-          className={styles.textarea}
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 resize-y"
           id="content"
           name="content"
           rows={8}
@@ -106,10 +104,10 @@ export default function UploadForm() {
         ></textarea>
       </div>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="imageUrl">Cover Image URL</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="imageUrl">Cover Image URL</label>
         <input
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           type="url"
           id="imageUrl"
           name="imageUrl"
@@ -118,10 +116,10 @@ export default function UploadForm() {
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="videoUrl">Video URL (Optional - transforms into Video News)</label>
+      <div className="flex flex-col">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="videoUrl">Video URL (Optional - transforms into Video News)</label>
         <input
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           type="url"
           id="videoUrl"
           name="videoUrl"
@@ -130,10 +128,10 @@ export default function UploadForm() {
         />
       </div>
 
-      <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-        <label className="form-label" htmlFor="sourceUrl">Verified Reference Link (Required where applicable)</label>
+      <div className="flex flex-col mb-2">
+        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="sourceUrl">Verified Reference Link (Required where applicable)</label>
         <input
-          className="form-input"
+          className="w-full px-4 py-3 bg-muted/40 border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           type="url"
           id="sourceUrl"
           name="sourceUrl"
@@ -144,8 +142,7 @@ export default function UploadForm() {
 
       <button
         type="submit"
-        className="btn btn-primary"
-        style={{ width: '100%', padding: '0.875rem' }}
+        className="btn btn-primary w-full py-3.5 cursor-pointer"
         disabled={loading}
       >
         {loading ? 'Submitting News...' : 'Publish / Submit News'}
@@ -153,3 +150,4 @@ export default function UploadForm() {
     </form>
   );
 }
+

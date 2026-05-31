@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { subscribeEmail } from '@/lib/actions';
-import styles from './Footer.module.css';
 
 export default function NewsletterForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -27,21 +26,20 @@ export default function NewsletterForm() {
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+    <div className="w-full">
+      <form onSubmit={handleSubmit} className="flex gap-2 w-full">
         <input
           type="email"
           name="email"
           placeholder="Enter your email"
           required
-          className={styles.input}
+          className="flex-1 px-4 py-3 bg-card border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           disabled={status === 'loading'}
           aria-label="Email address for newsletter"
         />
         <button
           type="submit"
-          className="btn btn-primary"
-          style={{ padding: '0.75rem 1.25rem', whiteSpace: 'nowrap' }}
+          className="whitespace-nowrap px-5 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-primary to-secondary hover:-translate-y-0.5 shadow-md hover:shadow-primary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={status === 'loading'}
         >
           {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
@@ -49,13 +47,13 @@ export default function NewsletterForm() {
       </form>
 
       {status === 'success' && (
-        <div className={styles.successMsg}>
+        <div className="mt-3 px-4 py-3 bg-accent/10 text-accent rounded-xl text-sm font-medium animate-[fadeIn_0.3s_ease-out]">
           ✓ {message}
         </div>
       )}
 
       {status === 'error' && (
-        <div className={styles.errorMsg}>
+        <div className="mt-3 px-4 py-3 bg-destructive/10 text-destructive rounded-xl text-sm font-medium">
           ⚠ {message}
         </div>
       )}

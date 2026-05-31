@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { toggleLikeAction } from '@/lib/actions';
-import styles from '@/app/news/[slug]/page.module.css';
+import { Bookmark } from 'lucide-react';
 
 interface LikeButtonProps {
   articleId: string;
@@ -31,7 +31,6 @@ export default function LikeButton({
 
     if (loading) return;
 
-    // Optimistic UI updates
     setLiked(!liked);
     setCount(prev => (liked ? prev - 1 : prev + 1));
     setLoading(true);
@@ -42,14 +41,12 @@ export default function LikeButton({
         setLiked(!!result.liked);
         setCount(result.count ?? 0);
       } else {
-        // Revert on failure
         setLiked(liked);
         setCount(count);
         setErrorMsg(result.error || 'Failed to complete action.');
         setTimeout(() => setErrorMsg(null), 4000);
       }
     } catch {
-      // Revert on error
       setLiked(liked);
       setCount(count);
       setErrorMsg('A network error occurred.');
@@ -60,30 +57,24 @@ export default function LikeButton({
   }
 
   return (
-    <div className={styles.likeSection}>
+    <div className="flex flex-col gap-3 items-center text-center">
       <button
         onClick={handleLike}
-        className={`${styles.likeBtn} ${liked ? styles.likeBtnLiked : styles.likeBtnUnliked}`}
+        className={`flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl font-bold border transition-all duration-150 cursor-pointer ${
+          liked
+            ? 'bg-destructive/10 border-destructive text-destructive'
+            : 'bg-muted border-border text-muted-foreground hover:bg-destructive/10 hover:border-destructive hover:text-destructive hover:scale-[1.02]'
+        }`}
         aria-label={liked ? 'Unlike this article' : 'Like this article'}
-        disabled={loading && articleId.startsWith('m')} // Disable loading indicators on mock items since mock action will return auth needed
+        disabled={loading && articleId.startsWith('m')}
       >
-        <span>{liked ? '❤️ Saved Story' : '🤍 Bookmark Story'}</span>
+        <Bookmark className={`h-4 w-4 shrink-0 ${liked ? 'fill-current' : ''}`} />
+        <span>{liked ? 'Saved Story' : 'Bookmark Story'}</span>
       </button>
-      <span className={styles.likeCount}>{count} readers saved this</span>
+      <span className="text-sm text-muted-foreground">{count} readers saved this</span>
 
       {errorMsg && (
-        <div style={{
-          background: 'var(--danger-glow)',
-          border: '1px solid rgba(244, 63, 94, 0.2)',
-          color: 'var(--danger)',
-          padding: '0.5rem 0.75rem',
-          borderRadius: 'var(--radius-sm)',
-          fontSize: '0.8rem',
-          fontWeight: 600,
-          marginTop: '0.5rem',
-          width: '100%',
-          animation: 'fadeIn 0.2s ease-out'
-        }}>
+        <div className="w-full px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-semibold animate-[fadeIn_0.2s_ease-out]">
           {errorMsg}
         </div>
       )}

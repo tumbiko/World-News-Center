@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation';
 import db from '@/lib/db';
 import { getUserFromCookie } from '@/lib/auth';
 import AdminControlPanel from '@/components/AdminControlPanel';
-import styles from './page.module.css';
 import { User, Subscriber, Article } from '@prisma/client';
 
 export default async function AdminDashboardPage() {
@@ -33,7 +32,6 @@ export default async function AdminDashboardPage() {
 
   try {
     // 2. Perform database aggregations
-    totalUsers = await db.user.count();
     totalUsers = await db.user.count();
     totalUploaders = await db.user.count({ where: { role: 'UPLOADER' } });
     totalSubscribers = await db.subscriber.count({ where: { active: true } });
@@ -72,42 +70,42 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className={`${styles.wrapper} container animate-fade-in`}>
+    <div className="py-12 min-h-screen relative container mx-auto px-6 animate-fade-in">
       {/* Lights */}
-      <div className="glow-bg" style={{ width: '450px', height: '450px', top: '-10%', left: '-10%', background: 'var(--primary-glow)' }}></div>
-      <div className="glow-bg" style={{ width: '400px', height: '400px', top: '40%', right: '-10%', background: 'var(--accent-glow)' }}></div>
+      <div className="glow-bg pointer-events-none" style={{ width: '450px', height: '450px', top: '-10%', left: '-10%', background: 'var(--primary-glow)' }}></div>
+      <div className="glow-bg pointer-events-none" style={{ width: '400px', height: '400px', top: '40%', right: '-10%', background: 'var(--accent-glow)' }}></div>
 
       {/* Header */}
       <div>
-        <h1 className={styles.title}>Administrator Command Center</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Welcome, {user.name}. Manage user permissions, moderates uploads, and inspect platform performance metrics.</p>
+        <h1 className="font-display text-3xl sm:text-[2.25rem] font-extrabold text-foreground mb-2">Administrator Command Center</h1>
+        <p className="text-muted-foreground text-sm">Welcome, {user.name}. Manage user permissions, moderates uploads, and inspect platform performance metrics.</p>
       </div>
 
       {/* Metric Cards Grid */}
-      <section className={styles.metricsGrid}>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalUsers}</span>
-          <span className={styles.metricLbl}>Total User Profiles</span>
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mt-8 mb-14">
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalUsers}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Total User Profiles</span>
         </div>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalUploaders}</span>
-          <span className={styles.metricLbl}>Active News Uploaders</span>
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalUploaders}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Active News Uploaders</span>
         </div>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalSubscribers}</span>
-          <span className={styles.metricLbl}>Active Subscriptions</span>
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalSubscribers}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Active Subscriptions</span>
         </div>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalArticles}</span>
-          <span className={styles.metricLbl}>Published News</span>
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalArticles}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Published News</span>
         </div>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalViews}</span>
-          <span className={styles.metricLbl}>Interactive Views</span>
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalViews}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Interactive Views</span>
         </div>
-        <div className={styles.metricCard}>
-          <span className={styles.metricVal}>{totalLikes}</span>
-          <span className={styles.metricLbl}>Bookmarks / Saves</span>
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-primary before:to-secondary">
+          <span className="font-display text-[2.25rem] font-extrabold text-foreground leading-none">{totalLikes}</span>
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Bookmarks / Saves</span>
         </div>
       </section>
 
@@ -121,3 +119,4 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
+

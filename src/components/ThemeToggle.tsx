@@ -1,111 +1,73 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { Moon, Sun, Monitor } from 'lucide-react';
+import {
 
-type Theme = 'light' | 'dark' | 'system';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>('system');
+  const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem('theme') as Theme) || 'system';
-    setTheme(savedTheme);
     setMounted(true);
-    
-    // Set listener for system preference change if in system mode
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemChange = () => {
-      const current = localStorage.getItem('theme') || 'system';
-      if (current === 'system') {
-        const isDark = mediaQuery.matches;
-        if (isDark) {
-          document.documentElement.classList.add('dark-theme');
-          document.documentElement.classList.remove('light-theme');
-        } else {
-          document.documentElement.classList.add('light-theme');
-          document.documentElement.classList.remove('dark-theme');
-        }
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
   }, []);
 
-  const changeTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    
-    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const isDark = newTheme === 'dark' || (newTheme === 'system' && darkQuery.matches);
-    
-    if (isDark) {
-      document.documentElement.classList.add('dark-theme');
-      document.documentElement.classList.remove('light-theme');
-    } else {
-      document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
-    }
-  };
-
-  // Avoid hydration mismatch by rendering a placeholder state until mounted
   if (!mounted) {
     return (
-      <div style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        background: 'var(--background-alt)',
-        border: '1px solid var(--card-border)',
-        padding: '2px',
-        borderRadius: 'var(--radius-full)',
-        marginLeft: '1rem',
-        height: '32px',
-        width: '200px',
-        opacity: 0.5,
-      }} />
+      <button 
+        className="inline-flex items-center justify-center rounded-lg border w-9 h-9 border-border bg-card opacity-50 cursor-not-allowed" 
+        disabled
+      >
+        <Sun className="h-4 w-4" />
+      </button>
     );
   }
 
   return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      background: 'var(--background-alt)',
-      border: '1px solid var(--card-border)',
-      padding: '2px',
-      borderRadius: 'var(--radius-full)',
-      marginLeft: '1rem',
-    }}>
-      {(['light', 'dark', 'system'] as const).map((t) => (
-        <button
-          key={t}
-          onClick={() => changeTheme(t)}
-          style={{
-            background: theme === t ? 'var(--card)' : 'transparent',
-            border: 'none',
-            outline: 'none',
-            cursor: 'pointer',
-            padding: '4px 10px',
-            borderRadius: 'var(--radius-full)',
-            color: theme === t ? 'var(--text-primary)' : 'var(--text-secondary)',
-            fontWeight: 600,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            transition: 'var(--transition-fast)',
-            boxShadow: theme === t ? 'var(--shadow-sm)' : 'none',
-          }}
-          title={`Switch to ${t} theme`}
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className="inline-flex items-center justify-center rounded-lg border w-9 h-9 border-border bg-card hover:bg-muted text-foreground transition-colors cursor-pointer outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        aria-label="Toggle theme"
+      >
+        {theme === 'dark' ? (
+          <Moon className="h-4 w-4" />
+        ) : theme === 'light' ? (
+          <Sun className="h-4 w-4" />
+        ) : (
+          <Monitor className="h-4 w-4" />
+        )}
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end" className="min-w-[120px]">
+        <DropdownMenuItem
+          onClick={() => setTheme('light')}
+          className="flex items-center gap-2 cursor-pointer"
         >
-          <span style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center' }}>
-            {t === 'light' && '☀️'}
-            {t === 'dark' && '🌙'}
-            {t === 'system' && '💻'}
-          </span>
-          <span style={{ textTransform: 'capitalize', fontSize: '0.7rem' }}>{t}</span>
-        </button>
-      ))}
-    </div>
+          <Sun className="h-4 w-4" />
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setTheme('dark')}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <Moon className="h-4 w-4" />
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setTheme('system')}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <Monitor className="h-4 w-4" />
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

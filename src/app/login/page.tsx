@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { loginAction } from '@/lib/actions';
-import styles from './Auth.module.css';
+import { Globe, AlertCircle } from 'lucide-react';
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -31,26 +31,26 @@ function LoginForm() {
   }
 
   return (
-    <div className={`${styles.authCard} glass animate-fade-in`}>
-      <div className={styles.header}>
-        <span className={styles.logoIcon}>🌍</span>
-        <h2 className="gradient-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.75rem' }}>
+    <div className="w-full max-w-[460px] p-10 rounded-2xl shadow-2xl relative z-10 bg-card/60 backdrop-blur-md border border-border animate-fade-in">
+      <div className="text-center mb-8">
+        <Globe className="h-10 w-10 text-primary mx-auto mb-3" />
+        <h2 className="gradient-text font-display font-extrabold text-3xl">
           Welcome Back
         </h2>
-        <p className={styles.subtext}>Sign in to your World News Center account</p>
+        <p className="text-muted-foreground text-sm mt-1">Sign in to your World News Center account</p>
       </div>
 
       {error && (
-        <div className={styles.errorAlert}>
-          <span>⚠</span> {error}
+        <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3.5 rounded-xl text-sm mb-6 flex items-center gap-2 animate-fade-in">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="email">Email Address</label>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col">
+          <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="email">Email Address</label>
           <input
-            className="form-input"
+            className="w-full px-4 py-3 bg-card border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             type="email"
             id="email"
             name="email"
@@ -60,10 +60,10 @@ function LoginForm() {
           />
         </div>
 
-        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-          <label className="form-label" htmlFor="password">Password</label>
+        <div className="flex flex-col mb-2">
+          <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="password">Password</label>
           <input
-            className="form-input"
+            className="w-full px-4 py-3 bg-card border border-border rounded-xl text-foreground text-sm transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             type="password"
             id="password"
             name="password"
@@ -75,17 +75,16 @@ function LoginForm() {
 
         <button
           type="submit"
-          className="btn btn-primary"
-          style={{ width: '100%', padding: '0.875rem' }}
+          className="btn btn-primary w-full py-3.5 cursor-pointer"
           disabled={loading}
         >
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
 
-      <p className={styles.footerLink}>
+      <p className="text-center mt-6 text-muted-foreground text-sm">
         Don&apos;t have an account yet?{' '}
-        <Link href="/signup" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+        <Link href="/signup" className="text-primary font-semibold hover:underline">
           Sign Up
         </Link>
       </p>
@@ -95,14 +94,14 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className={styles.wrapper}>
+    <div className="min-h-[calc(100vh-72px-280px)] flex items-center justify-center relative py-12 px-6 overflow-hidden">
       {/* Dynamic Glowing Accent Background */}
-      <div className="glow-bg" style={{ width: '400px', height: '400px', top: '10%', right: '20%', background: 'var(--primary)' }}></div>
-      <div className="glow-bg" style={{ width: '350px', height: '350px', bottom: '10%', left: '20%', background: 'var(--secondary)' }}></div>
+      <div className="glow-bg pointer-events-none" style={{ width: '400px', height: '400px', top: '10%', right: '20%', background: 'var(--primary-glow)' }}></div>
+      <div className="glow-bg pointer-events-none" style={{ width: '350px', height: '350px', bottom: '10%', left: '20%', background: 'var(--secondary-glow)' }}></div>
 
       <Suspense fallback={
-        <div className={`${styles.authCard} glass`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px' }}>
-          <span style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>Loading secure session...</span>
+        <div className="w-full max-w-[460px] p-10 rounded-2xl shadow-2xl relative z-10 bg-card/60 backdrop-blur-md border border-border flex items-center justify-center h-[300px]">
+          <span className="text-sm text-muted-foreground">Loading secure session...</span>
         </div>
       }>
         <LoginForm />
@@ -110,3 +109,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

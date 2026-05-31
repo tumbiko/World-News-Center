@@ -10,7 +10,7 @@ import {
   adminToggleFeaturedAction,
   adminUpdateUserRoleAction,
 } from '@/lib/actions';
-import styles from '@/app/admin/dashboard/page.module.css';
+import { Users, PenSquare, Sparkles, Folder, User as UserIcon, Megaphone, TrendingUp, Star, Mail, Inbox } from 'lucide-react';
 
 interface AdminControlPanelProps {
   users: User[];
@@ -95,68 +95,55 @@ export default function AdminControlPanel({
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', zIndex: 10 }}>
+    <div className="relative w-full z-10">
       {/* Toast Notification */}
       {toast && (
-        <div style={{
-          position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
-          zIndex: 9999,
-          background: toast.success ? 'var(--glass-bg)' : 'rgba(244, 63, 94, 0.95)',
-          border: toast.success ? '1px solid var(--accent)' : '1px solid var(--danger)',
-          color: toast.success ? 'var(--text-primary)' : 'white',
-          padding: '1rem 1.5rem',
-          borderRadius: 'var(--radius-md)',
-          boxShadow: 'var(--shadow-lg)',
-          backdropFilter: 'blur(8px)',
-          fontWeight: 600,
-          animation: 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-        }}>
+        <div className={`fixed bottom-8 right-8 z-50 px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-semibold text-sm border flex items-center gap-2 animate-fade-in ${
+          toast.success 
+            ? 'bg-card/90 border-accent text-foreground' 
+            : 'bg-destructive border-destructive text-white'
+        }`}>
           {toast.success ? '✓' : '⚠'} {toast.msg}
         </div>
       )}
 
-      <div className={styles.layoutGrid}>
+      <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-12">
         {/* Left Column: User Management */}
-        <div className={styles.sectionCard}>
-          <h2 className={styles.sectionTitle}>
-            👥 User Management Directory
-            <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-muted)' }}>
+        <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-md mb-10">
+          <h2 className="font-display text-xl font-bold mb-6 text-foreground border-b border-border pb-2.5 flex justify-between items-center flex-wrap gap-2">
+            <span className="flex items-center gap-2"><Users className="h-5 w-5 text-primary shrink-0" /> User Management Directory</span>
+            <span className="text-sm font-medium text-muted-foreground">
               ({users.length} registered accounts)
             </span>
           </h2>
 
-          <div className={styles.tableContainer}>
-            <table className={styles.table}>
+          <div className="w-full overflow-x-auto scrollbar-thin">
+            <table className="w-full border-collapse text-left">
               <thead>
                 <tr>
-                  <th className={styles.th}>Name</th>
-                  <th className={styles.th}>Email Address</th>
-                  <th className={styles.th}>Active Role</th>
-                  <th className={styles.th} style={{ textAlign: 'right' }}>Modify Access</th>
+                  <th className="px-4 py-3 border-b-2 border-border text-xs font-bold text-muted-foreground uppercase tracking-wider">Name</th>
+                  <th className="px-4 py-3 border-b-2 border-border text-xs font-bold text-muted-foreground uppercase tracking-wider">Email Address</th>
+                  <th className="px-4 py-3 border-b-2 border-border text-xs font-bold text-muted-foreground uppercase tracking-wider">Active Role</th>
+                  <th className="px-4 py-3 border-b-2 border-border text-xs font-bold text-muted-foreground uppercase tracking-wider text-right">Modify Access</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map(u => (
-                  <tr key={u.id}>
-                    <td className={styles.td} style={{ fontWeight: 600 }}>{u.name}</td>
-                    <td className={styles.td} style={{ color: 'var(--text-secondary)' }}>{u.email}</td>
-                    <td className={styles.td}>
-                      <span className="role-tag" style={{
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: 'var(--radius-full)',
-                        background: u.role === 'ADMIN' ? 'var(--accent-glow)' : u.role === 'UPLOADER' ? 'var(--secondary-glow)' : 'var(--primary-glow)',
-                        color: u.role === 'ADMIN' ? 'var(--accent)' : u.role === 'UPLOADER' ? 'var(--secondary)' : 'var(--primary)'
-                      }}>
+                  <tr key={u.id} className="hover:bg-muted/10 transition-colors">
+                    <td className="px-4 py-3.5 border-b border-border text-sm text-foreground font-semibold max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{u.name}</td>
+                    <td className="px-4 py-3.5 border-b border-border text-sm text-muted-foreground max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{u.email}</td>
+                    <td className="px-4 py-3.5 border-b border-border text-sm">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${
+                        u.role === 'ADMIN' ? 'bg-accent-glow text-accent' : 
+                        u.role === 'UPLOADER' ? 'bg-secondary-glow text-secondary' : 
+                        'bg-primary-glow text-primary'
+                      }`}>
                         {u.role}
                       </span>
                     </td>
-                    <td className={styles.td} style={{ textAlign: 'right' }}>
+                    <td className="px-4 py-3.5 border-b border-border text-sm text-right">
                       <select
-                        className={styles.roleSelect}
+                        className="px-2 py-1.5 rounded-lg bg-muted border border-border text-xs font-semibold cursor-pointer focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
                         value={u.role}
                         disabled={loading === `role-${u.id}`}
                         onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
@@ -176,45 +163,43 @@ export default function AdminControlPanel({
         {/* Right Column: Moderation & Subscribers */}
         <div>
           {/* Content Moderation Drawer */}
-          <div className={styles.sectionCard}>
-            <h2 className={styles.sectionTitle}>
-              ✍ Content Moderation Queue
-              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--warning)' }}>
+          <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-md mb-10">
+            <h2 className="font-display text-xl font-bold mb-6 text-foreground border-b border-border pb-2.5 flex justify-between items-center flex-wrap gap-2">
+              <span className="flex items-center gap-2"><PenSquare className="h-5 w-5 text-primary shrink-0" /> Content Moderation Queue</span>
+              <span className="text-sm font-medium text-warning">
                 ({pendingArticles.length} pending)
               </span>
             </h2>
 
             {pendingArticles.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-muted)' }}>
-                <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>✨</span>
-                <p style={{ fontSize: '0.95rem' }}>No pending articles requiring approval.</p>
+              <div className="text-center py-10 px-4 text-muted-foreground flex flex-col items-center justify-center">
+                <Sparkles className="h-10 w-10 text-muted-foreground mb-2" />
+                <p className="text-sm">No pending articles requiring approval.</p>
               </div>
             ) : (
-              <div className={styles.moderationList}>
+              <div className="flex flex-col gap-5">
                 {pendingArticles.map(a => (
-                  <div key={a.id} className={styles.modCard}>
-                    <div className={styles.modHeader}>
-                      <h3 className={styles.modTitle}>{a.title}</h3>
-                      <div className={styles.modMeta}>
-                        <span>📁 {a.category}</span>
-                        <span>✍ {a.uploader?.name || 'Contributor'}</span>
+                  <div key={a.id} className="bg-muted/40 border border-border rounded-2xl p-6">
+                    <div className="mb-3">
+                      <h3 className="text-base font-bold text-foreground leading-snug mb-1">{a.title}</h3>
+                      <div className="flex gap-4 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1"><Folder className="h-3.5 w-3.5 text-muted-foreground shrink-0" /> {a.category}</span>
+                        <span className="flex items-center gap-1"><UserIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" /> {a.uploader?.name || 'Contributor'}</span>
                       </div>
                     </div>
-                    <p className={styles.modSummary}>{a.summary}</p>
-                    <div className={styles.modActions}>
+                    <p className="text-sm leading-relaxed text-muted-foreground mb-4 line-clamp-3">{a.summary}</p>
+                    <div className="flex gap-3 flex-wrap">
                       <button
                         onClick={() => handleApprove(a.id)}
                         disabled={loading !== null}
-                        className="btn btn-primary"
-                        style={{ padding: '0.45rem 1rem', fontSize: '0.8rem' }}
+                        className="btn btn-primary px-4 py-2 text-xs font-semibold cursor-pointer"
                       >
                         {loading === `approve-${a.id}` ? 'Approving...' : '✓ Approve & Publish'}
                       </button>
                       <button
                         onClick={() => handleReject(a.id)}
                         disabled={loading !== null}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.45rem 1rem', fontSize: '0.8rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}
+                        className="btn btn-secondary px-4 py-2 text-xs font-semibold cursor-pointer text-destructive border-destructive/30 hover:border-destructive hover:bg-destructive/5"
                       >
                         {loading === `reject-${a.id}` ? 'Rejecting...' : '✕ Reject'}
                       </button>
@@ -227,49 +212,47 @@ export default function AdminControlPanel({
 
           {/* Quick Featured & Trending Controls */}
           {allArticles.length > 0 && (
-            <div className={styles.sectionCard}>
-              <h2 className={styles.sectionTitle}>📣 Feed Spotlight Controls</h2>
-              <div className={styles.subscribersList} style={{ maxHeight: '280px' }}>
+            <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-md mb-10">
+              <h2 className="font-display text-xl font-bold mb-6 text-foreground border-b border-border pb-2.5 flex items-center gap-2">
+                <Megaphone className="h-5 w-5 text-primary shrink-0" /> Feed Spotlight Controls
+              </h2>
+              <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2 scrollbar-thin">
                 {allArticles.map(article => (
-                  <div key={article.id} className={styles.subCard} style={{ flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.85rem', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '240px' }}>
+                  <div key={article.id} className="bg-muted/40 border border-border rounded-xl p-4 flex flex-col gap-3 items-start">
+                    <div className="flex justify-between w-full gap-4">
+                      <span className="font-bold text-sm text-foreground truncate max-w-[240px]">
                         {article.title}
                       </span>
-                      <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 800, color: 'var(--accent)' }}>
+                      <span className="text-[10px] uppercase font-extrabold text-accent self-center shrink-0">
                         {article.category}
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div className="flex gap-2 flex-wrap">
                       <button
                         onClick={() => handleToggleTrending(article.id)}
-                        className="btn btn-secondary"
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                          article.isTrending 
+                            ? 'bg-primary-glow border-primary text-primary' 
+                            : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:bg-muted'
+                        }`}
                         disabled={loading !== null}
-                        style={{
-                          padding: '0.3rem 0.6rem',
-                          fontSize: '0.75rem',
-                          background: article.isTrending ? 'var(--primary-glow)' : 'transparent',
-                          color: article.isTrending ? 'var(--primary)' : 'var(--text-secondary)',
-                          borderColor: article.isTrending ? 'var(--primary)' : 'var(--card-border)'
-                        }}
                       >
-                        {article.isTrending ? '🔥 Trending Active' : '⚡ Mark Trending'}
+                        <TrendingUp className="h-3.5 w-3.5 shrink-0" />
+                        <span>{article.isTrending ? 'Trending Active' : 'Mark Trending'}</span>
                       </button>
 
                       <button
                         onClick={() => handleToggleFeatured(article.id)}
-                        className="btn btn-secondary"
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                          article.isFeatured 
+                            ? 'bg-secondary-glow border-secondary text-secondary' 
+                            : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:bg-muted'
+                        }`}
                         disabled={loading !== null}
-                        style={{
-                          padding: '0.3rem 0.6rem',
-                          fontSize: '0.75rem',
-                          background: article.isFeatured ? 'var(--secondary-glow)' : 'transparent',
-                          color: article.isFeatured ? 'var(--secondary)' : 'var(--text-secondary)',
-                          borderColor: article.isFeatured ? 'var(--secondary)' : 'var(--card-border)'
-                        }}
                       >
-                        {article.isFeatured ? '⭐ Spotlight Active' : '✨ Spotlight Hero'}
+                        <Star className="h-3.5 w-3.5 shrink-0" />
+                        <span>{article.isFeatured ? 'Spotlight Active' : 'Spotlight Hero'}</span>
                       </button>
                     </div>
                   </div>
@@ -279,32 +262,25 @@ export default function AdminControlPanel({
           )}
 
           {/* Newsletter Subscriber List */}
-          <div className={styles.sectionCard}>
-            <h2 className={styles.sectionTitle}>
-              📨 Active Newsletter Grid
-              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-muted)' }}>
+          <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-md">
+            <h2 className="font-display text-xl font-bold mb-6 text-foreground border-b border-border pb-2.5 flex justify-between items-center flex-wrap gap-2">
+              <span className="flex items-center gap-2"><Mail className="h-5 w-5 text-primary shrink-0" /> Active Newsletter Grid</span>
+              <span className="text-sm font-medium text-muted-foreground">
                 ({subscribers.length} emails)
               </span>
             </h2>
 
             {subscribers.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-muted)' }}>
-                <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}>📭</span>
-                <p>No active newsletter subscribers.</p>
+              <div className="text-center py-10 px-4 text-muted-foreground flex flex-col items-center justify-center">
+                <Inbox className="h-10 w-10 text-muted-foreground mb-2" />
+                <p className="text-sm">No active newsletter subscribers.</p>
               </div>
             ) : (
-              <div className={styles.subscribersList}>
+              <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin">
                 {subscribers.map(sub => (
-                  <div key={sub.id} className={styles.subCard}>
-                    <span style={{ fontWeight: 600 }}>{sub.email}</span>
-                    <span style={{
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      padding: '0.15rem 0.4rem',
-                      background: 'rgba(16, 185, 129, 0.15)',
-                      color: 'var(--accent)',
-                      borderRadius: 'var(--radius-full)'
-                    }}>
+                  <div key={sub.id} className="bg-muted/40 border border-border rounded-xl p-4 flex justify-between items-center text-sm">
+                    <span className="font-semibold text-foreground truncate max-w-[200px]">{sub.email}</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full shrink-0">
                       ACTIVE
                     </span>
                   </div>
@@ -317,3 +293,4 @@ export default function AdminControlPanel({
     </div>
   );
 }
+
